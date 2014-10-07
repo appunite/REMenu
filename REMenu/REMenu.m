@@ -305,19 +305,26 @@
     [self showFromRect:view.bounds inView:view];
 }
 
-- (void)showFromNavigationController:(UINavigationController *)navigationController
+- (void)showFromNavigationController:(UINavigationController *)navigationController rect:(CGRect)rect
 {
     if (self.isAnimating) {
         return;
     }
     
     self.navigationBar = navigationController.navigationBar;
-    [self showFromRect:CGRectMake(0, 0, navigationController.navigationBar.frame.size.width, navigationController.view.frame.size.height) inView:navigationController.view];
+    [self showFromRect:rect inView:navigationController.view];
     self.containerView.appearsBehindNavigationBar = self.appearsBehindNavigationBar;
     self.containerView.navigationBar = navigationController.navigationBar;
     if (self.appearsBehindNavigationBar) {
         [navigationController.view bringSubviewToFront:navigationController.navigationBar];
     }
+}
+
+- (void)showFromNavigationController:(UINavigationController *)navigationController
+{
+    self.navigationBar = navigationController.navigationBar;
+    CGRect rect = CGRectMake(0, 0, navigationController.navigationBar.frame.size.width, navigationController.view.frame.size.height);
+    [self showFromNavigationController:navigationController rect:rect];
 }
 
 - (void)closeWithCompletion:(void (^)(void))completion
